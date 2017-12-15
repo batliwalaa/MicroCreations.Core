@@ -1,0 +1,77 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using MicroCreations.Core.OperationAggregation;
+using MicroCreations.Core.OperationAggregation.Domain;
+using MicroCreations.Core.OperationAggregation.Domain.Interfaces;
+using MicroCreations.Core.OperationAggregation.Enums;
+using NUnit.Framework;
+
+namespace MicroCreations.Core.Tests
+{
+    [TestFixture]
+    public class OperationAggregatorTests
+    {
+        private IOperationAggregator _operationAggregator;
+        
+        [SetUp]
+        public void Setup()
+        {
+            _operationAggregator = new OperationAggregator(new List<IOperationExecutor>{ new FakeExecutor() });
+        }
+        
+        [Test]
+        public void OperationAggregator()
+        {
+            var expected = new BatchOperationResponse
+            {
+                Results = new List<OperationResult>
+                {
+                    new OperationResult
+                    {
+                        Value = "1"
+                    }
+                }
+            };
+
+            var request = new BatchOperationRequest
+            {
+                Operations = CreateOperations(),
+                Arguments = new List<OperationArgument> { new OperationArgument { Name = "Operation Args", Value = "1" }}
+            };
+
+            var result = _operationAggregator.Execute(request);
+            
+            Assert.AreEqual(expected.Results.First().Value, result.Results.First().Value);
+        }
+
+        private static IEnumerable<Operation> CreateOperations()
+        {
+            var operations = new List<Operation>();
+
+            var op1 = new Operation
+            {
+                OperationName = "Operation 1",
+                ProcessingType = ProcessingType.Serial
+            };
+            
+            operations.Add(op1);
+
+            return operations;
+        }
+        
+        private class FakeExecutor : IOperationExecutor
+        {
+            public FakeExecutor()
+            {
+                SupportedOperationName = "Operation 1";
+            }
+            
+            public string SupportedOperationName { get; set; }
+            
+            public OperationResult Execute(OperationExecutionContext context)
+            {
+                return new OperationResult {Value = context.Arguments.First().Value};
+            }
+        }
+    }
+}

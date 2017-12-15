@@ -11,7 +11,6 @@ namespace MicroCreations.Core.OperationAggregation.Domain
         public bool IsFaulted { get; set; }
 
         public Exception Exception { get; set; }
-
-        public T GetValue<T>()
+        
     }
 }

@@ -97,7 +97,7 @@ namespace MicroCreations.Core.OperationAggregation
             {
                 try
                 {
-                    executor.Execute(GetOperationExecutionContext(arguments, results, CancellationToken.None));
+                    results.Add(executor.Execute(GetOperationExecutionContext(arguments, results, CancellationToken.None)));
                 }
                 catch (Exception ex)
                 {
