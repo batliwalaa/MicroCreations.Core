@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Core.Operati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Core.Tests", "MicroCreations.Core.Tests\MicroCreations.Core.Tests.csproj", "{B2419FF3-E97E-4BFB-B287-7A0498E26D0B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "License", "License", "{32E8F333-3E9C-4A2A-AD80-F7C5BF361F9B}"
+	ProjectSection(SolutionItems) = preProject
+		License.txt = License.txt
+		mc.ico = mc.ico
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
