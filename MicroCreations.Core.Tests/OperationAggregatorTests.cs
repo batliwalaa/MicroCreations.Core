@@ -35,7 +35,32 @@ namespace MicroCreations.Core.Tests
 
             var request = new BatchOperationRequest
             {
-                Operations = CreateOperations(),
+                Operations = CreateOperations(ProcessingType.Serial),
+                Arguments = new List<OperationArgument> { new OperationArgument { Name = "Operation Args", Value = "1" }}
+            };
+
+            var result = _operationAggregator.Execute(request);
+            
+            Assert.AreEqual(expected.Results.First().Value, result.Results.First().Value);
+        }
+        
+        [Test]
+        public void OperationAggregatorUsingParallel()
+        {
+            var expected = new BatchOperationResponse
+            {
+                Results = new List<OperationResult>
+                {
+                    new OperationResult
+                    {
+                        Value = "1"
+                    }
+                }
+            };
+
+            var request = new BatchOperationRequest
+            {
+                Operations = CreateOperations(ProcessingType.Parallel),
                 Arguments = new List<OperationArgument> { new OperationArgument { Name = "Operation Args", Value = "1" }}
             };
 
@@ -44,14 +69,14 @@ namespace MicroCreations.Core.Tests
             Assert.AreEqual(expected.Results.First().Value, result.Results.First().Value);
         }
 
-        private static IEnumerable<Operation> CreateOperations()
+        private static IEnumerable<Operation> CreateOperations(ProcessingType processingType)
         {
             var operations = new List<Operation>();
 
             var op1 = new Operation
             {
                 OperationName = "Operation 1",
-                ProcessingType = ProcessingType.Serial
+                ProcessingType = processingType
             };
             
             operations.Add(op1);

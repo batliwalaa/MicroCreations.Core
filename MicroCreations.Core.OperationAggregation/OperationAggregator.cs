@@ -65,7 +65,7 @@ namespace MicroCreations.Core.OperationAggregation
 
                         if (!parallelOptions.CancellationToken.IsCancellationRequested)
                         {
-                            executor.Execute(GetOperationExecutionContext(arguments, results, parallelOptions.CancellationToken));
+                            results.Add(executor.Execute(GetOperationExecutionContext(arguments, results, parallelOptions.CancellationToken)));
                         }
                     }
                     catch (Exception ex)
