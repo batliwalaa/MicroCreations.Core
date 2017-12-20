@@ -1,1 +1,1 @@
-# MicroCreations.Core
+# MicroCreations
