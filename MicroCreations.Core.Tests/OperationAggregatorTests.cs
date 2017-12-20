@@ -4,6 +4,7 @@ using MicroCreations.Core.OperationAggregation;
 using MicroCreations.Core.OperationAggregation.Domain;
 using MicroCreations.Core.OperationAggregation.Domain.Interfaces;
 using MicroCreations.Core.OperationAggregation.Enums;
+using Moq;
 using NUnit.Framework;
 
 namespace MicroCreations.Core.Tests
@@ -12,11 +13,13 @@ namespace MicroCreations.Core.Tests
     public class OperationAggregatorTests
     {
         private IOperationAggregator _operationAggregator;
-        
+        private Mock<IContextBuilder> _mockContextBuilder;
+
         [SetUp]
         public void Setup()
         {
-            _operationAggregator = new OperationAggregator(new List<IOperationExecutor>{ new FakeExecutor() });
+            _mockContextBuilder = new Mock<IContextBuilder>();
+            _operationAggregator = new OperationAggregator(new List<IOperationExecutor>{ new FakeExecutor() }, _mockContextBuilder.Object);
         }
         
         [Test]

@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Domain\BatchOperationRequest.cs" />
     <Compile Include="Domain\BatchOperationResponse.cs" />
+    <Compile Include="Domain\DefaultContextBuilder.cs" />
+    <Compile Include="Domain\Interfaces\IContext.cs" />
+    <Compile Include="Domain\Interfaces\IContextBuilder.cs" />
     <Compile Include="Domain\Interfaces\IOperationAggregator.cs" />
     <Compile Include="Domain\Interfaces\IOperationExecutor.cs" />
     <Compile Include="Domain\Operation.cs" />

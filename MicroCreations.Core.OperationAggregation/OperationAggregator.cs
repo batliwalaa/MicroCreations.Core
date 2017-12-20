@@ -5,7 +5,6 @@ using MicroCreations.Core.OperationAggregation.Enums;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Web;
 using System;
 using System.Configuration;
 
@@ -14,26 +13,29 @@ namespace MicroCreations.Core.OperationAggregation
     public class OperationAggregator : IOperationAggregator
     {
         private readonly IEnumerable<IOperationExecutor> _executors;
+        private readonly IContextBuilder _contextBuilder;
 
-        public OperationAggregator(IEnumerable<IOperationExecutor> executors)
+        public OperationAggregator(IEnumerable<IOperationExecutor> executors, IContextBuilder contextBuilder)
         {
             _executors = executors;
+            _contextBuilder = contextBuilder;
         }
 
         public BatchOperationResponse Execute(BatchOperationRequest request)
         {
             var adjacentGroups = GetAdjacentGroups(request.Operations);
             var results = new List<OperationResult>();
+            var context = _contextBuilder.GetContext();
 
             foreach(var kvp in adjacentGroups)
             {
                 if(kvp.Key == ProcessingType.Serial)
                 {
-                    results.AddRange(ProcessSerial(request.FaultCancellationOption, request.Arguments, GetExecutors(kvp.Value)));
+                    results.AddRange(ProcessSerial(request, context, GetExecutors(kvp.Value)));
                 }
                 else
                 {
-                    results.AddRange(ProcessParallel(request.FaultCancellationOption, request.Arguments, GetExecutors(kvp.Value)));
+                    results.AddRange(ProcessParallel(request, context, GetExecutors(kvp.Value)));
                 }
 
                 if(request.FaultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
@@ -45,14 +47,13 @@ namespace MicroCreations.Core.OperationAggregation
             return new BatchOperationResponse { Results = results };
         }
 
-        private IEnumerable<OperationResult> ProcessParallel(
-            FaultCancellationOption faultCancellationOption,
-            IEnumerable<OperationArgument> arguments,
+        private static IEnumerable<OperationResult> ProcessParallel(
+            BatchOperationRequest request,
+            IContext context,
             IEnumerable<IOperationExecutor> executors)
         {
             var results = new List<OperationResult>();
             var cancellationTokenSource = new CancellationTokenSource();
-            var mainThreadHttpContext = HttpContext.Current;
             var parallelOptions = GetParallelOptions(cancellationTokenSource);
 
             try
@@ -61,23 +62,23 @@ namespace MicroCreations.Core.OperationAggregation
                 {
                     try
                     {
-                        HttpContext.Current = mainThreadHttpContext;
-
                         if (!parallelOptions.CancellationToken.IsCancellationRequested)
                         {
-                            results.Add(executor.Execute(GetOperationExecutionContext(arguments, results, parallelOptions.CancellationToken)));
+                            results.Add(executor.Execute(GetOperationExecutionContext(request.Arguments, context, results, parallelOptions.CancellationToken)));
                         }
                     }
                     catch (Exception ex)
                     {
-                        if (faultCancellationOption == FaultCancellationOption.Cancel)
+                        if (request.FaultCancellationOption == FaultCancellationOption.Cancel)
                         {
+                            // ReSharper disable once AccessToDisposedClosure
                             cancellationTokenSource.Cancel();
                         }
                         results.Add(GetFaultedOperationResult(executor.SupportedOperationName, ex));
                     }
                 });
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch { } // do nothing, as each task in parallel handles exception, and exception is returned back to client.
             finally
             {
@@ -86,9 +87,9 @@ namespace MicroCreations.Core.OperationAggregation
             return results;
         }
 
-        private IEnumerable<OperationResult> ProcessSerial(
-            FaultCancellationOption faultCancellationOption,
-            IEnumerable<OperationArgument> arguments,
+        private static IEnumerable<OperationResult> ProcessSerial(
+            BatchOperationRequest request,
+            IContext context,
             IEnumerable<IOperationExecutor> executors)
         {
             var results = new List<OperationResult>();
@@ -97,14 +98,14 @@ namespace MicroCreations.Core.OperationAggregation
             {
                 try
                 {
-                    results.Add(executor.Execute(GetOperationExecutionContext(arguments, results, CancellationToken.None)));
+                    results.Add(executor.Execute(GetOperationExecutionContext(request.Arguments, context, results, CancellationToken.None)));
                 }
                 catch (Exception ex)
                 {
                     results.Add(GetFaultedOperationResult(executor.SupportedOperationName, ex));
                 }
 
-                if(faultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
+                if(request.FaultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
                 {
                     break;
                 }
@@ -113,7 +114,7 @@ namespace MicroCreations.Core.OperationAggregation
             return results;
         }
 
-        private IDictionary<ProcessingType, IEnumerable<Operation>> GetAdjacentGroups(IEnumerable<Operation> operations)
+        private static IDictionary<ProcessingType, IEnumerable<Operation>> GetAdjacentGroups(IEnumerable<Operation> operations)
         {
             var dictionary = new Dictionary<ProcessingType, IEnumerable<Operation>>();
             var currentKey = default(ProcessingType);
@@ -126,7 +127,7 @@ namespace MicroCreations.Core.OperationAggregation
                     if (list.Any())
                     {
                         dictionary.Add(currentKey, list);
-                        list = null;
+                        list = new List<Operation>();
                     }
 
                     currentKey = operation.ProcessingType;
@@ -144,13 +145,6 @@ namespace MicroCreations.Core.OperationAggregation
             return dictionary;
         }
 
-        private IEnumerable<IOperationExecutor> GetExecutors(IEnumerable<Operation> operations)
-        {
-            var operationNames = operations.Select(x => x.OperationName);
-
-            return _executors.Where(x => operationNames.Contains(x.SupportedOperationName));
-        }
-
         private static OperationResult GetFaultedOperationResult(string operationName, Exception exception)
         {
             return new OperationResult
@@ -163,6 +157,7 @@ namespace MicroCreations.Core.OperationAggregation
 
         private static OperationExecutionContext GetOperationExecutionContext(
             IEnumerable<OperationArgument> arguments,
+            IContext context,
             IEnumerable<OperationResult> results,
             CancellationToken cancellationToken)
         {
@@ -170,16 +165,16 @@ namespace MicroCreations.Core.OperationAggregation
             {
                 Arguments = arguments,
                 CancellationToken = cancellationToken,
-                Results = results
+                Results = results,
+                Context = context
             };
         }
 
         private static int? ToNullableInt(string value)
         {
             var result = default(int?);
-            int intValue;
 
-            if(int.TryParse(value, out intValue))
+            if(int.TryParse(value, out var intValue))
             {
                 result = intValue;
             }
@@ -201,6 +196,13 @@ namespace MicroCreations.Core.OperationAggregation
             }
 
             return parallelOptions;
+        }
+
+        private IEnumerable<IOperationExecutor> GetExecutors(IEnumerable<Operation> operations)
+        {
+            var operationNames = operations.Select(x => x.OperationName);
+
+            return _executors.Where(x => operationNames.Contains(x.SupportedOperationName));
         }
     }
 }
