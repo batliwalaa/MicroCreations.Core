@@ -2,7 +2,7 @@
 {
     public interface IOperationExecutor
     {
-        string SupportedOperationName { get; set; }
+        string SupportedOperationName { get; }
 
         OperationResult Execute(OperationExecutionContext context);
     }

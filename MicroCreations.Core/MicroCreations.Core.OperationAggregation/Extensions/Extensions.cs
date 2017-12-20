@@ -89,12 +89,12 @@ namespace MicroCreations.Core.OperationAggregation.Extensions
         {
             var result = false;
 
-            return bool.TryParse(instance?.Value.ToString() ?? string.Empty, out result) ? result : false;
+            return bool.TryParse(instance?.Value.ToString() ?? string.Empty, out result) && result;
         }
 
         public static T ToEnum<T>(this OperationArgument instance)
         {
-            return Enum.IsDefined(typeof(T), instance?.Value) ? (T)Enum.ToObject(typeof(T), instance?.Value) : default(T);
+            return Enum.IsDefined(typeof(T), instance.Value) ? (T)Enum.ToObject(typeof(T), instance.Value) : default(T);
         }
 
         public static OperationArgument Get(this IEnumerable<OperationArgument> instance, string key)
@@ -105,6 +105,11 @@ namespace MicroCreations.Core.OperationAggregation.Extensions
         public static T Convert<T>(this OperationResult instance)
         {
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(instance.Value));
+        }
+
+        public static OperationResult Get(this IEnumerable<OperationResult> instance, string supportedOperationName)
+        {
+            return instance.FirstOrDefault(x => x.OperationName == supportedOperationName);
         }
     }
 }

@@ -49,7 +49,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OperationAggregatorTests.cs" />
+    <Compile Include="OperationAggregation\OperationAggregatorTests.cs" />
+    <Compile Include="OperationAggregation\OperationExecutors\FakeExecutor.cs" />
+    <Compile Include="OperationAggregation\OperationExecutors\FakeExecutor2.cs" />
+    <Compile Include="OperationAggregation\OperationExecutors\FakeExecutor3.cs" />
+    <Compile Include="OperationAggregation\OperationExecutors\FaultedExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
