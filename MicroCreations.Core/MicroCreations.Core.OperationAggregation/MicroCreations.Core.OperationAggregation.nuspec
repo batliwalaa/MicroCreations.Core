@@ -6,7 +6,7 @@
     <title>Operation Aggregation</title>
     <authors>Micro Creations Ltd</authors>
     <owners>Micro Creations Ltd</owners>
-    <licenseUrl>https://github.com/batliwalaa/MicroCreations.Core/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/microcreationsuk/MicroCreations/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/batliwalaa/MicroCreations.Core</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Perform batch operations serial and / or parallel</description>
