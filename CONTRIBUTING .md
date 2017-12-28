@@ -35,4 +35,4 @@ you provide is on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND
 INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS
 FOR A PARTICULAR PURPOSE.
 
-[github]: https://github.com/microcreationsuk/MicroCreations
+[github]: https://github.com/microcreationsuk/MicroCreations/issues
