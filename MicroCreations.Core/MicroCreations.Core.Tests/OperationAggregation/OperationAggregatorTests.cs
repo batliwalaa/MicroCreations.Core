@@ -88,7 +88,7 @@ namespace MicroCreations.Core.Tests.OperationAggregation
         }
 
         [Test]
-        public void OperationAggregatorUsingParallelWithOneFaulted()
+        public void When_Execute_Invoked_With_One_Executor_Throwing_Exception_Expect_Result_Has_One_Faulted()
         {
             var expected = new BatchOperationResponse
             {
@@ -119,6 +119,40 @@ namespace MicroCreations.Core.Tests.OperationAggregation
             Assert.AreEqual(3, result.Results.Count());
             Assert.AreEqual(expected.Results.Get("Operation 1").Value, result.Results.Get("Operation 1").Value);
             Assert.AreEqual(expected.Results.Get("Operation 2").Value, result.Results.Get("Operation 2").Value);
+            Assert.AreEqual(true, result.Results.Get("FaultedExecutor").IsFaulted);
+
+            Verify();
+        }
+
+
+
+        [Test]
+        public void When_Execute_Invoked_Having_Three_Operations_With_MaxDegreeOfParallelism_Two_First_Executor_Throwing_Exception_Expect_Result_Has_One_Faulted_And_Two_Result()
+        {
+            var request = new BatchOperationRequest
+            {
+                Operations = new[]
+                {
+                    new Operation { OperationName = "FaultedExecutor", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "Operation 2", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "Operation 2", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "Operation 2", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "Operation 2", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "FaultedExecutor", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "FaultedExecutor", ProcessingType = ProcessingType.Parallel },
+                    new Operation { OperationName = "FaultedExecutor", ProcessingType = ProcessingType.Parallel }
+                },
+                Arguments = new List<OperationArgument>
+                {
+                    new OperationArgument { Name = "Operation Arg 1", Value = "1" },
+                    new OperationArgument { Name = "Operation Arg 2", Value = "2" }
+                },
+                FaultCancellationOption = FaultCancellationOption.Cancel
+            };
+
+            var result = _operationAggregator.Execute(request);
+
+            Assert.AreEqual(2, result.Results.Count());
             Assert.AreEqual(true, result.Results.Get("FaultedExecutor").IsFaulted);
 
             Verify();

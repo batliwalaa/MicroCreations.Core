@@ -6,12 +6,24 @@ namespace MicroCreations.Core.OperationAggregation.Domain
 {
     public class OperationExecutionContext
     {
-        public IEnumerable<OperationArgument> Arguments { get; set; }
+        internal OperationExecutionContext(
+            IEnumerable<OperationArgument> arguments,
+            IEnumerable<OperationResult> results,
+            CancellationToken cancellationToken,
+            IContext context)
+        {
+            Arguments = arguments;
+            Results = results;
+            CancellationToken = cancellationToken;
+            Context = context;
+        }
 
-        public IEnumerable<OperationResult> Results { get; set; }
+        public IEnumerable<OperationArgument> Arguments { get; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public IEnumerable<OperationResult> Results { get; }
 
-        public IContext Context { get; set; }
+        public CancellationToken CancellationToken { get; }
+
+        public IContext Context { get; }
     }
 }

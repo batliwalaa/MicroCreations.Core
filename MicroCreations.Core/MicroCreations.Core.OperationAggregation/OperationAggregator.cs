@@ -15,7 +15,9 @@ namespace MicroCreations.Core.OperationAggregation
         private readonly IEnumerable<IOperationExecutor> _executors;
         private readonly IContextBuilder _contextBuilder;
 
-        public OperationAggregator(IEnumerable<IOperationExecutor> executors, IContextBuilder contextBuilder)
+        public OperationAggregator(
+            IEnumerable<IOperationExecutor> executors,
+            IContextBuilder contextBuilder)
         {
             _executors = executors;
             _contextBuilder = contextBuilder;
@@ -23,13 +25,23 @@ namespace MicroCreations.Core.OperationAggregation
 
         public BatchOperationResponse Execute(BatchOperationRequest request)
         {
+            return ExecuteBatch(request);
+        }
+
+        public async Task<BatchOperationResponse> ExecuteAsync(BatchOperationRequest request)
+        {
+            return await Task.Factory.StartNew(() => ExecuteBatch(request));
+        }
+
+        private BatchOperationResponse ExecuteBatch(BatchOperationRequest request)
+        {
             var adjacentGroups = GetAdjacentGroups(request.Operations);
             var results = new List<OperationResult>();
             var context = _contextBuilder.GetContext();
 
-            foreach(var kvp in adjacentGroups)
+            foreach (var kvp in adjacentGroups)
             {
-                if(kvp.Key == ProcessingType.Serial)
+                if (kvp.Key == ProcessingType.Serial)
                 {
                     results.AddRange(ProcessSerial(request, context, GetExecutors(kvp.Value)));
                 }
@@ -38,7 +50,7 @@ namespace MicroCreations.Core.OperationAggregation
                     results.AddRange(ProcessParallel(request, context, GetExecutors(kvp.Value)));
                 }
 
-                if(request.FaultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
+                if (request.FaultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
                 {
                     break;
                 }
@@ -161,13 +173,7 @@ namespace MicroCreations.Core.OperationAggregation
             IEnumerable<OperationResult> results,
             CancellationToken cancellationToken)
         {
-            return new OperationExecutionContext
-            {
-                Arguments = arguments,
-                CancellationToken = cancellationToken,
-                Results = results,
-                Context = context
-            };
+            return new OperationExecutionContext(arguments, results, cancellationToken, context);
         }
 
         private static int? ToNullableInt(string value)

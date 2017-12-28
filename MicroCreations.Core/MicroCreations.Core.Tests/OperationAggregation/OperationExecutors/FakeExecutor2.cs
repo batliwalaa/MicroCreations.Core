@@ -1,4 +1,6 @@
-﻿using MicroCreations.Core.OperationAggregation.Domain;
+﻿using System;
+using System.Threading;
+using MicroCreations.Core.OperationAggregation.Domain;
 using MicroCreations.Core.OperationAggregation.Domain.Interfaces;
 using MicroCreations.Core.OperationAggregation.Extensions;
 
@@ -14,7 +16,8 @@ namespace MicroCreations.Core.Tests.OperationAggregation.OperationExecutors
 
         public OperationResult Execute(OperationExecutionContext context)
         {
-            return new OperationResult { Value = context.Arguments.Get("Operation Arg 2").Value, OperationName = SupportedOperationName };
+            Console.WriteLine("ThreadId: " + Thread.CurrentThread.ManagedThreadId);
+            return new OperationResult { Value = context.Arguments.Get("Operation Arg 2").Value + " " + Thread.CurrentThread.ManagedThreadId, OperationName = SupportedOperationName };
         }
     }
 }
