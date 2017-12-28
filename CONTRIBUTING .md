@@ -2,7 +2,14 @@
 
 Please read these guidelines before contributing to repository microcreations:
 
+ - [New Feature](#feature)
  - [Contributor Agreement](#contributor)
+
+
+## <a name="feature"></a> Want new feature?
+
+You can request a new feature by submitting an issue to the [GitHub Repository][github].
+
 
 ## <a name="contributor"></a> Contributor Agreement
 
@@ -28,3 +35,4 @@ you provide is on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND
 INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS
 FOR A PARTICULAR PURPOSE.
 
+[github]: https://github.com/microcreationsuk/MicroCreations
