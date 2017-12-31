@@ -237,3 +237,6 @@ uploads/
 /.vs/MicroCreations.Core/v15/Server/sqlite3
 /MicroCreations.Core/.vs/MicroCreations.Core/v15/Server/sqlite3
 /.vs
+*.ide
+*.ide-shm
+*.ide-wal
