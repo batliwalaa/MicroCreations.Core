@@ -39,7 +39,7 @@ namespace MicroCreations.Batch.Tests
             _serialProcessorMock.SetupGet(x => x.ProcessingType).Returns(ProcessingType.Serial).Verifiable();
             _serialProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
 
-            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, _contextBuilderMock.Object, new[] { _serialProcessorMock.Object });
+            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, new[] { _serialProcessorMock.Object }, _contextBuilderMock.Object);
 
             var results = await _operationAggregator.Execute(new BatchOperationRequest { Operations = operations, FaultCancellationOption = FaultCancellationOption.None });
 
@@ -62,7 +62,7 @@ namespace MicroCreations.Batch.Tests
             _parallelProcessorMock.SetupGet(x => x.ProcessingType).Returns(ProcessingType.Parallel).Verifiable();
             _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
 
-            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, _contextBuilderMock.Object, new[] { _parallelProcessorMock.Object });
+            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, new[] { _parallelProcessorMock.Object }, _contextBuilderMock.Object);
 
             var results = await _operationAggregator.Execute(new BatchOperationRequest { Operations = operations, FaultCancellationOption = FaultCancellationOption.None });
 
@@ -91,7 +91,7 @@ namespace MicroCreations.Batch.Tests
             _parallelProcessorMock.SetupGet(x => x.ProcessingType).Returns(ProcessingType.Parallel).Verifiable();
             _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { new OperationResult { OperationName = "Operation 2", Value = 2 } }.AsEnumerable())).Verifiable();
 
-            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, _contextBuilderMock.Object, new[] { _serialProcessorMock.Object, _parallelProcessorMock.Object });
+            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, new[] { _serialProcessorMock.Object, _parallelProcessorMock.Object }, _contextBuilderMock.Object);
 
             var results = await _operationAggregator.Execute(new BatchOperationRequest { Operations = operations, FaultCancellationOption = FaultCancellationOption.None });
 
@@ -116,7 +116,7 @@ namespace MicroCreations.Batch.Tests
             _parallelProcessorMock.SetupGet(x => x.ProcessingType).Returns(ProcessingType.Parallel).Verifiable();
             _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
 
-            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, _contextBuilderMock.Object, new[] { _parallelProcessorMock.Object });
+            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, new[] { _parallelProcessorMock.Object }, _contextBuilderMock.Object);
 
             var results = await _operationAggregator.Execute(new BatchOperationRequest { Operations = operations, FaultCancellationOption = FaultCancellationOption.Cancel });
 

@@ -15,8 +15,8 @@ namespace MicroCreations.Batch
 
         public BatchAggregator(
             IEnumerable<IOperationExecutor> executors,
-            IContextBuilder contextBuilder,
-            IEnumerable<IProcessor> processors)
+            IEnumerable<IProcessor> processors,
+            IContextBuilder contextBuilder = null)
         {
             _executors = executors;
             _contextBuilder = contextBuilder;
@@ -32,7 +32,7 @@ namespace MicroCreations.Batch
         {
             var adjacentGroups = GetAdjacentGroups(request.Operations);
             var results = new List<OperationResult>();
-            var context = await _contextBuilder.GetContext();
+            var context = _contextBuilder != null ? await _contextBuilder.GetContext() : null;
             
             foreach (var kvp in adjacentGroups)
             {

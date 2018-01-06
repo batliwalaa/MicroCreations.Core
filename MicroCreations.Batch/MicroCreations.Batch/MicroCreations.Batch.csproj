@@ -55,7 +55,6 @@
     <Compile Include="BatchException.cs" />
     <Compile Include="Operations\BatchOperationRequest.cs" />
     <Compile Include="Operations\BatchOperationResponse.cs" />
-    <Compile Include="Context\DefaultContextBuilder.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Context\IContextBuilder.cs" />
     <Compile Include="IBatchAggregator.cs" />
