@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
-using MicroCreations.Batch.Operations;
 using MicroCreations.Batch.Processors;
 using NUnit.Framework;
 

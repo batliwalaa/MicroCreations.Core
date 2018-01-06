@@ -1,15 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MicroCreations.Batch.Context;
 using MicroCreations.Batch.Processors;
 
 namespace MicroCreations.Batch.Castle.Windsor
 {
-    [ExcludeFromCodeCoverage]
     public static class DependencyInjectionContainerExtensions
     {
-        [ExcludeFromCodeCoverage]
         public static void RegisterBatchAggregator(this IWindsorContainer container, bool registerDefaultContextBuilder = true)
         {
             var assemblyDescriptor = Classes.FromAssemblyContaining<IBatchAggregator>();
