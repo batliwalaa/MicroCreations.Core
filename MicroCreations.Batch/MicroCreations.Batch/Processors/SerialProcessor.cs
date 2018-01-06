@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Domain;
-using MicroCreations.Batch.Enums;
+using MicroCreations.Batch.Operations;
 
 namespace MicroCreations.Batch.Processors
 {

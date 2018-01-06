@@ -57,10 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatchAggregatorTests.cs" />
-    <Compile Include="OperationExecutors\FakeExecutor.cs" />
-    <Compile Include="OperationExecutors\FakeExecutor2.cs" />
-    <Compile Include="OperationExecutors\FakeExecutor3.cs" />
-    <Compile Include="OperationExecutors\FaultedExecutor.cs" />
+    <Compile Include="Processors\BaseProcessorTests.cs" />
+    <Compile Include="Processors\ParallelProcessorTests.cs" />
+    <Compile Include="Processors\SerialProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +72,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

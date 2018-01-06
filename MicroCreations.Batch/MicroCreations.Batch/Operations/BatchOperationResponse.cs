@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MicroCreations.Batch.Domain
+namespace MicroCreations.Batch.Operations
 {
     public class BatchOperationResponse
     {

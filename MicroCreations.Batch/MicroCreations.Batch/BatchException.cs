@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace MicroCreations.Batch
@@ -7,6 +8,7 @@ namespace MicroCreations.Batch
     // to work around this condition, ISafeSerilizationData is used, see documentation
     // https://msdn.microsoft.com/en-us/library/system.runtime.serialization.isafeserializationdata(v=vs.110).aspx
     [Serializable]
+    [ExcludeFromCodeCoverage]
     public class BatchException : Exception
     {
         [NonSerialized]
@@ -25,6 +27,7 @@ namespace MicroCreations.Batch
         public string ErrorMessage => _state.Message;
 
         [Serializable]
+        [ExcludeFromCodeCoverage]
         private struct ExceptionState : ISafeSerializationData
         {
             // ReSharper disable once UnusedAutoPropertyAccessor.Local

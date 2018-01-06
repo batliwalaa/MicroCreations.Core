@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using MicroCreations.Batch.Domain.Interfaces;
+using MicroCreations.Batch.Context;
+using MicroCreations.Batch.Operations;
 
-namespace MicroCreations.Batch.Domain
+namespace MicroCreations.Batch
 {
     public class ProcessRequest
     {

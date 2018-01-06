@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MicroCreations.Batch.Domain
+﻿namespace MicroCreations.Batch.Operations
 {
     public class OperationResult
     {
@@ -9,8 +7,7 @@ namespace MicroCreations.Batch.Domain
         public object Value { get; set; }
 
         public bool IsFaulted { get; set; }
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         public BatchException Exception { get; set; }
         
     }

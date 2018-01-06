@@ -1,9 +1,8 @@
-﻿using MicroCreations.Batch.Domain.Interfaces;
-using System.Collections.Generic;
-using MicroCreations.Batch.Domain;
-using MicroCreations.Batch.Enums;
+﻿using System.Collections.Generic;
+using MicroCreations.Batch.Operations;
 using System.Linq;
 using System.Threading.Tasks;
+using MicroCreations.Batch.Context;
 using MicroCreations.Batch.Processors;
 
 namespace MicroCreations.Batch
@@ -88,9 +87,9 @@ namespace MicroCreations.Batch
         
         private IEnumerable<IOperationExecutor> GetExecutors(IEnumerable<Operation> operations)
         {
-            var operationNames = operations.Select(x => x.OperationName);
+            var operationNames = operations.Select(x => x.OperationName).ToList();
 
-            return _executors.Where(x => operationNames.Contains(x.SupportedOperationName));
+            return _executors.Where(x => operationNames.Contains(x.SupportedOperationName)).OrderBy(x => operationNames.IndexOf(x.SupportedOperationName));
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿using MicroCreations.Batch.Domain;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using MicroCreations.Batch.Operations;
+using Newtonsoft.Json;
 
-namespace MicroCreations.Batch.Extensions
+namespace MicroCreations.Batch
 {
+    [ExcludeFromCodeCoverage]
     public static class Extensions
     {
         public static int ToInt(this OperationArgument instance)

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using MicroCreations.Batch.Domain;
-using MicroCreations.Batch.Domain.Interfaces;
-using MicroCreations.Batch.Enums;
+using MicroCreations.Batch.Operations;
 
 namespace MicroCreations.Batch.Processors
 {
@@ -27,14 +26,20 @@ namespace MicroCreations.Batch.Processors
                 PropagateCompletion = true
             });
 
-            executorTransformBlock.Complete();
+            var executors = processRequest.Executors.ToList();
+            var executorCount = executors.Count;
 
+            for (var i = 0; i < executorCount; ++i)
+            {
+                executorTransformBlock.Post(executors[i]);
+            }
+            executorTransformBlock.Complete();
             await resultActionBlock.Completion;
 
             return results;
         }
 
-        private static TransformBlock<IOperationExecutor, OperationResult> GetExecutorTransformBlock(List<OperationResult> results, ProcessRequest processRequest)
+        private static TransformBlock<IOperationExecutor, OperationResult> GetExecutorTransformBlock(ICollection<OperationResult> results, ProcessRequest processRequest)
         {
             var cancellationTokenSource = new CancellationTokenSource();
 

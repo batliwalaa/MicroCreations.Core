@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Domain;
-using MicroCreations.Batch.Domain.Interfaces;
-using MicroCreations.Batch.Enums;
+using MicroCreations.Batch.Context;
+using MicroCreations.Batch.Operations;
 
 namespace MicroCreations.Batch.Processors
 {
@@ -23,6 +23,7 @@ namespace MicroCreations.Batch.Processors
             return new BatchExecutionContext(arguments, results, cancellationToken, context);
         }
 
+        [ExcludeFromCodeCoverage]
         protected static int? ToNullableInt(string value)
         {
             var result = default(int?);

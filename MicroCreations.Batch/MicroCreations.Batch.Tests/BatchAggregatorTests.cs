@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Domain;
-using MicroCreations.Batch.Domain.Interfaces;
-using MicroCreations.Batch.Enums;
+using MicroCreations.Batch.Context;
+using MicroCreations.Batch.Operations;
 using MicroCreations.Batch.Processors;
 using Moq;
 using NUnit.Framework;
@@ -103,6 +102,29 @@ namespace MicroCreations.Batch.Tests
             _serialProcessorMock.VerifyGet(x => x.ProcessingType, Times.AtLeastOnce);
             _serialProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
             _parallelProcessorMock.VerifyGet(x => x.ProcessingType, Times.AtLeastOnce);
+            _parallelProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
+
+            Verify();
+        }
+
+        [Test]
+        public async Task Wen_Execute_Invoked_With_1_Operation_Throwing_Exception_Expect_Operation_IsFaulted()
+        {
+            var operations = CreateOperations(new[] { ProcessingType.Parallel });
+            var expectedResult = new OperationResult { OperationName = "Operation 1", IsFaulted = true };
+
+            _parallelProcessorMock.SetupGet(x => x.ProcessingType).Returns(ProcessingType.Parallel).Verifiable();
+            _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
+
+            _operationAggregator = new BatchAggregator(new[] { _operationExecutorMock.Object }, _contextBuilderMock.Object, new[] { _parallelProcessorMock.Object });
+
+            var results = await _operationAggregator.Execute(new BatchOperationRequest { Operations = operations, FaultCancellationOption = FaultCancellationOption.Cancel });
+
+            results.Should().BeOfType<BatchOperationResponse>();
+            results.Results.Count().ShouldBeEquivalentTo(1);
+            results.Results.First().ShouldBeEquivalentTo(expectedResult);
+
+            _parallelProcessorMock.VerifyGet(x => x.ProcessingType, Times.Once);
             _parallelProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
 
             Verify();

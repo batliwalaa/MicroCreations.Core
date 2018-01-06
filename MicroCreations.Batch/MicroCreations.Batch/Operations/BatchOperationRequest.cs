@@ -1,8 +1,9 @@
-﻿using MicroCreations.Batch.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
-namespace MicroCreations.Batch.Domain
+namespace MicroCreations.Batch.Operations
 {
+    [ExcludeFromCodeCoverage]
     public class BatchOperationRequest
     {
         public IEnumerable<OperationArgument> Arguments { get; set; }

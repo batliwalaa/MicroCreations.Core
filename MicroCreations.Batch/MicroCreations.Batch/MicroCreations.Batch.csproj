@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,25 +53,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatchException.cs" />
-    <Compile Include="Domain\BatchOperationRequest.cs" />
-    <Compile Include="Domain\BatchOperationResponse.cs" />
-    <Compile Include="Domain\DefaultContextBuilder.cs" />
-    <Compile Include="Domain\Interfaces\IContext.cs" />
-    <Compile Include="Domain\Interfaces\IContextBuilder.cs" />
-    <Compile Include="Domain\Interfaces\IBatchAggregator.cs" />
-    <Compile Include="Domain\Interfaces\IOperationExecutor.cs" />
+    <Compile Include="Operations\BatchOperationRequest.cs" />
+    <Compile Include="Operations\BatchOperationResponse.cs" />
+    <Compile Include="Context\DefaultContextBuilder.cs" />
+    <Compile Include="Context\IContext.cs" />
+    <Compile Include="Context\IContextBuilder.cs" />
+    <Compile Include="IBatchAggregator.cs" />
+    <Compile Include="Operations\IOperationExecutor.cs" />
     <Compile Include="Processors\BaseProcessor.cs" />
     <Compile Include="Processors\IProcessor.cs" />
-    <Compile Include="Domain\Interfaces\IRequestBuilder.cs" />
-    <Compile Include="Domain\Interfaces\IRequestBuilderFactory.cs" />
-    <Compile Include="Domain\Operation.cs" />
-    <Compile Include="Domain\OperationArgument.cs" />
-    <Compile Include="Domain\BatchExecutionContext.cs" />
-    <Compile Include="Domain\OperationResult.cs" />
-    <Compile Include="Domain\ProcessRequest.cs" />
-    <Compile Include="Enums\FaultCancellationOption.cs" />
-    <Compile Include="Enums\ProcessingType.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Builders\IRequestBuilder.cs" />
+    <Compile Include="Builders\IRequestBuilderFactory.cs" />
+    <Compile Include="Operations\Operation.cs" />
+    <Compile Include="Operations\OperationArgument.cs" />
+    <Compile Include="Context\BatchExecutionContext.cs" />
+    <Compile Include="Operations\OperationResult.cs" />
+    <Compile Include="ProcessRequest.cs" />
+    <Compile Include="FaultCancellationOption.cs" />
+    <Compile Include="ProcessingType.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="BatchAggregator.cs" />
     <Compile Include="Processors\ParallelProcessor.cs" />
     <Compile Include="Processors\SerialProcessor.cs" />
@@ -80,6 +81,7 @@
     <None Include="MicroCreations.Batch.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

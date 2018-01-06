@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
-using MicroCreations.Batch.Domain.Interfaces;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
-namespace MicroCreations.Batch.Domain
+namespace MicroCreations.Batch.Context
 {
+    [ExcludeFromCodeCoverage]
     public class DefaultContextBuilder : IContextBuilder
     {
         public async Task<IContext> GetContext()

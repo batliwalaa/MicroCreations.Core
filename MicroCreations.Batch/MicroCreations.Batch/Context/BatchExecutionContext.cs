@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using MicroCreations.Batch.Domain.Interfaces;
+using MicroCreations.Batch.Operations;
 
-namespace MicroCreations.Batch.Domain
+namespace MicroCreations.Batch.Context
 {
+    [ExcludeFromCodeCoverage]
     public class BatchExecutionContext
     {
         internal BatchExecutionContext(
@@ -19,17 +21,11 @@ namespace MicroCreations.Batch.Domain
         }
 
         public IEnumerable<OperationArgument> Arguments { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         public IEnumerable<OperationResult> Results { get; }
 
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public CancellationToken CancellationToken { get; }
 
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public IContext Context { get; }
     }
 }
