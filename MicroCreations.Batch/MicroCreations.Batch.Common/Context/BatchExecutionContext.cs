@@ -8,7 +8,7 @@ namespace MicroCreations.Batch.Common.Context
     [ExcludeFromCodeCoverage]
     public class BatchExecutionContext
     {
-        internal BatchExecutionContext(
+        public BatchExecutionContext(
             IEnumerable<OperationArgument> arguments,
             IEnumerable<OperationResult> results,
             CancellationToken cancellationToken,
