@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common.Operations;
 
-namespace MicroCreations.Batch.Context
+namespace MicroCreations.Batch.Common.Context
 {
     [ExcludeFromCodeCoverage]
     public class BatchExecutionContext

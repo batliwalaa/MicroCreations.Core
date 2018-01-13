@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace MicroCreations.Batch.Operations
+namespace MicroCreations.Batch.Common.Operations
 {
     [ExcludeFromCodeCoverage]
     public class OperationArgument

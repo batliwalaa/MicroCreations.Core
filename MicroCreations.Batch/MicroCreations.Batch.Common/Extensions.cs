@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common.Operations;
 using Newtonsoft.Json;
 
-namespace MicroCreations.Batch
+namespace MicroCreations.Batch.Common
 {
     [ExcludeFromCodeCoverage]
     public static class Extensions
@@ -72,6 +72,8 @@ namespace MicroCreations.Batch
 
         public static T ToEnum<T>(this OperationArgument instance)
         {
+            if (instance?.Value == null) return default(T);
+
             return Enum.IsDefined(typeof(T), instance.Value) ? (T)Enum.ToObject(typeof(T), instance.Value) : default(T);
         }
 

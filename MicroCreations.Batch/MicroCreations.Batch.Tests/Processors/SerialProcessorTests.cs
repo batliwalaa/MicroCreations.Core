@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
+using MicroCreations.Batch.Common;
 using MicroCreations.Batch.Processors;
 using NUnit.Framework;
 

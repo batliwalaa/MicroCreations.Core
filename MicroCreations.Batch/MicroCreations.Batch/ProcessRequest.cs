@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using MicroCreations.Batch.Context;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common.Context;
+using MicroCreations.Batch.Common.Operations;
 
 namespace MicroCreations.Batch
 {

@@ -1,4 +1,4 @@
-﻿namespace MicroCreations.Batch
+﻿namespace MicroCreations.Batch.Common
 {
     public enum ProcessingType
     {

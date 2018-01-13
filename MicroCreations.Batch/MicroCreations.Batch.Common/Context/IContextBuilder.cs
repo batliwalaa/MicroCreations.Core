@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MicroCreations.Batch.Context
+namespace MicroCreations.Batch.Common.Context
 {
     public interface IContextBuilder
     {

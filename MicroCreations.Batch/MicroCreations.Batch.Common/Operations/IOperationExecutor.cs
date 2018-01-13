@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using MicroCreations.Batch.Context;
+using MicroCreations.Batch.Common.Context;
 
-namespace MicroCreations.Batch.Operations
+namespace MicroCreations.Batch.Common.Operations
 {
     public interface IOperationExecutor
     {

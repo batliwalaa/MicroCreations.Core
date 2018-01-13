@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common.Operations;
 
 namespace MicroCreations.Batch.Builders
 {

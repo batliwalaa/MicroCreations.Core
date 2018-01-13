@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Context;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common;
+using MicroCreations.Batch.Common.Context;
+using MicroCreations.Batch.Common.Operations;
 using MicroCreations.Batch.Processors;
 using Moq;
 using NUnit.Framework;

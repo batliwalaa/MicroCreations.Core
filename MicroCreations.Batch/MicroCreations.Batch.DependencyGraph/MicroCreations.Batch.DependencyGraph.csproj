@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{74BCB509-A16E-4903-A3BB-B74EB35633A5}</ProjectGuid>
+    <ProjectGuid>{9188C335-31A4-4973-8A14-68284BF1E24D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MicroCreations.Batch.Castle.Windsor</RootNamespace>
-    <AssemblyName>MicroCreations.Batch.Castle.Windsor</AssemblyName>
+    <RootNamespace>MicroCreations.Batch.DependencyGraph</RootNamespace>
+    <AssemblyName>MicroCreations.Batch.DependencyGraph</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,17 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,25 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DependencyInjectionContainerExtensions.cs" />
+    <Compile Include="DefaultDependencyGraph.cs" />
+    <Compile Include="IDependencyGraphBuilder.cs" />
+    <Compile Include="DependencyNode.cs" />
+    <Compile Include="IDependencyGraph.cs" />
+    <Compile Include="DependencyGraphBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MicroCreations.Batch.Common\MicroCreations.Batch.Common.csproj">
-      <Project>{0cf63ccf-fccb-439a-959a-56c1f2bd7378}</Project>
-      <Name>MicroCreations.Batch.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MicroCreations.Batch.DependencyGraph\MicroCreations.Batch.DependencyGraph.csproj">
-      <Project>{9188c335-31a4-4973-8a14-68284bf1e24d}</Project>
-      <Name>MicroCreations.Batch.DependencyGraph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MicroCreations.Batch\MicroCreations.Batch.csproj">
-      <Project>{06f3e200-bde8-473f-8a58-461bd1d362eb}</Project>
-      <Name>MicroCreations.Batch</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

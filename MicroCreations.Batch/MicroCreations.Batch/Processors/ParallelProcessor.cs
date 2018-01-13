@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common;
+using MicroCreations.Batch.Common.Operations;
 
 namespace MicroCreations.Batch.Processors
 {

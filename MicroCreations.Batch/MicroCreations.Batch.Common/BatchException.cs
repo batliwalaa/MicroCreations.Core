@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
-namespace MicroCreations.Batch
+namespace MicroCreations.Batch.Common
 {
     // GetObjectData is marked with SecurityCriticalAttribute which prevents execution in security-transparent code.
     // to work around this condition, ISafeSerilizationData is used, see documentation

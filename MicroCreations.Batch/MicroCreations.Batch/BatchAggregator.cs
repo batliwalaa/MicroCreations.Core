@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using MicroCreations.Batch.Operations;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Context;
+using MicroCreations.Batch.Common;
+using MicroCreations.Batch.Common.Context;
+using MicroCreations.Batch.Common.Operations;
 using MicroCreations.Batch.Processors;
 
 namespace MicroCreations.Batch

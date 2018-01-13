@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common;
+using MicroCreations.Batch.Common.Operations;
 
 namespace MicroCreations.Batch.Processors
 {

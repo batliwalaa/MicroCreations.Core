@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Context;
-using MicroCreations.Batch.Operations;
+using MicroCreations.Batch.Common;
+using MicroCreations.Batch.Common.Context;
+using MicroCreations.Batch.Common.Operations;
 
 namespace MicroCreations.Batch.Processors
 {

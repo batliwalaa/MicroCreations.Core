@@ -1,4 +1,4 @@
-﻿namespace MicroCreations.Batch.Operations
+﻿namespace MicroCreations.Batch.Common.Operations
 {
     public class Operation
     {
