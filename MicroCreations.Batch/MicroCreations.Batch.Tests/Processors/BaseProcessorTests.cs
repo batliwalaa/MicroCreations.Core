@@ -17,11 +17,11 @@ namespace MicroCreations.Batch.Tests.Processors
     {
         private Mock<IOperationExecutor> _operationExecutorMock;
         protected IProcessor Processor { get; set; }
-
+        protected ProcessingType ProcessingType { get; set; }
         [SetUp]
         public void SetUp()
         {
-            Initialise();
+            Initialise(new[] { _operationExecutorMock.Object });
         }
 
         protected void SetUpMocks(bool throwsException = false)
@@ -38,20 +38,18 @@ namespace MicroCreations.Batch.Tests.Processors
             }
         }
 
-        protected abstract void Initialise();
+        protected abstract void Initialise(IEnumerable<IOperationExecutor> executors);
 
         protected ProcessRequest GetRequest()
         {
-            return new ProcessRequest
+            return new ProcessRequest(default(IEnumerable<OperationResult>))
             {
-                Executors = new[]
+                Operations = new[]
                 {
-                    _operationExecutorMock.Object
+                    new Operation { OperationName = "Operation 1", ProcessingType = ProcessingType }
                 },
-                Request = new BatchOperationRequest
-                {
-                    FaultCancellationOption = FaultCancellationOption.Cancel
-                }
+
+                FaultCancellationOption = FaultCancellationOption.Cancel
             };
         }
 

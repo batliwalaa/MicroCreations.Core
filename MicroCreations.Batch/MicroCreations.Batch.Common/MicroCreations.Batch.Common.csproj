@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,9 +47,12 @@
     <Compile Include="Context\BatchExecutionContext.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Context\IContextBuilder.cs" />
+    <Compile Include="DependencyGraph\DefaultDependencyOperationPredicate.cs" />
+    <Compile Include="DependencyGraph\DependencyNode.cs" />
+    <Compile Include="DependencyGraph\IDependencyGraph.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FaultCancellationOption.cs" />
-    <Compile Include="Operations\IDependencyOperationPredicate.cs" />
+    <Compile Include="DependencyGraph\IDependencyOperationPredicate.cs" />
     <Compile Include="Operations\BatchOperationRequest.cs" />
     <Compile Include="Operations\BatchOperationResponse.cs" />
     <Compile Include="Operations\IOperationExecutor.cs" />
@@ -63,7 +63,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.3</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

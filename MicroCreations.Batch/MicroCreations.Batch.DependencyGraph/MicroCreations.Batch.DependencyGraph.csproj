@@ -43,10 +43,14 @@
   <ItemGroup>
     <Compile Include="DefaultDependencyGraph.cs" />
     <Compile Include="IDependencyGraphBuilder.cs" />
-    <Compile Include="DependencyNode.cs" />
-    <Compile Include="IDependencyGraph.cs" />
     <Compile Include="DependencyGraphBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicroCreations.Batch.Common\MicroCreations.Batch.Common.csproj">
+      <Project>{0cf63ccf-fccb-439a-959a-56c1f2bd7378}</Project>
+      <Name>MicroCreations.Batch.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

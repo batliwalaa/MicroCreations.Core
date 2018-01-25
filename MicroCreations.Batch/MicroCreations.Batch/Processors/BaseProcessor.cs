@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MicroCreations.Batch.Common;
@@ -11,9 +12,16 @@ namespace MicroCreations.Batch.Processors
 {
     internal abstract class BaseProcessor : IProcessor
     {
+        private readonly IEnumerable<IOperationExecutor> _executors;
+
+        protected BaseProcessor(IEnumerable<IOperationExecutor> executors)
+        {
+            _executors = executors;
+        }
+
         public abstract Task<IEnumerable<OperationResult>> ProcessAsync(ProcessRequest processRequest);
 
-        public abstract ProcessingType ProcessingType { get; }
+        public abstract ProcessorType ProcessorType { get; }
 
         protected static BatchExecutionContext GetBatchExecutionContext(
             IEnumerable<OperationArgument> arguments,
@@ -45,6 +53,13 @@ namespace MicroCreations.Batch.Processors
                 IsFaulted = true,
                 OperationName = operationName
             };
+        }
+
+        protected IEnumerable<IOperationExecutor> GetExecutors(IEnumerable<Operation> operations)
+        {
+            var operationNames = operations.Select(x => x.OperationName).ToList();
+
+            return _executors.Where(x => operationNames.Contains(x.SupportedOperationName)).OrderBy(x => operationNames.IndexOf(x.SupportedOperationName));
         }
     }
 }

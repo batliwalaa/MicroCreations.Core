@@ -12,11 +12,15 @@ namespace MicroCreations.Batch.Processors
 {
     internal class ParallelProcessor : BaseProcessor
     {
-        public override ProcessingType ProcessingType => ProcessingType.Parallel;
+        public ParallelProcessor(IEnumerable<IOperationExecutor> executors)
+               : base(executors)
+        {
+        }
+        public override ProcessorType ProcessorType => ProcessorType.Parallel;
 
         public override async Task<IEnumerable<OperationResult>> ProcessAsync(ProcessRequest processRequest)
         {
-            var results = new List<OperationResult>();
+            var results = new List<OperationResult>(processRequest.Results);
             var executorTransformBlock = GetExecutorTransformBlock(results, processRequest);
             // ReSharper disable once ImplicitlyCapturedClosure
             // TODO: look into implicitly captured closure warning
@@ -27,14 +31,16 @@ namespace MicroCreations.Batch.Processors
                 PropagateCompletion = true
             });
 
-            var executors = processRequest.Executors.ToList();
+            var executors = GetExecutors(processRequest.Operations).ToList();
             var executorCount = executors.Count;
 
             for (var i = 0; i < executorCount; ++i)
             {
                 executorTransformBlock.Post(executors[i]);
             }
+
             executorTransformBlock.Complete();
+
             await resultActionBlock.Completion;
 
             return results;
@@ -53,13 +59,13 @@ namespace MicroCreations.Batch.Processors
                         if (!cancellationTokenSource.Token.IsCancellationRequested)
                         {
                             result = await operationExecutor.Execute(GetBatchExecutionContext(
-                                processRequest.Request.Arguments,
+                                processRequest.Arguments,
                                 processRequest.ApplicationContext, results, cancellationTokenSource.Token));
                         }
                     }
                     catch (Exception ex)
                     {
-                        if (processRequest.Request.FaultCancellationOption == FaultCancellationOption.Cancel)
+                        if (processRequest.FaultCancellationOption == FaultCancellationOption.Cancel)
                         {
                             cancellationTokenSource.Cancel();
                         }

@@ -10,28 +10,37 @@ namespace MicroCreations.Batch.Processors
 {
     internal class SerialProcessor : BaseProcessor
     {
-        public override ProcessingType ProcessingType => ProcessingType.Serial;
+        public SerialProcessor(IEnumerable<IOperationExecutor> executors)
+            : base(executors)
+        {
+        }
+
+        public override ProcessorType ProcessorType => ProcessorType.Serial;
 
         public override async Task<IEnumerable<OperationResult>> ProcessAsync(ProcessRequest processRequest)
         {
-            var results = new List<OperationResult>();
+            var results = new List<OperationResult>(processRequest.Results);
+            var executors = GetExecutors(processRequest.Operations);
 
-            foreach (var executor in processRequest.Executors)
+            if (executors.Any())
             {
-                try
+                foreach (var executor in executors)
                 {
-                    var result = await executor.Execute(GetBatchExecutionContext(processRequest.Request.Arguments, processRequest.ApplicationContext, results, CancellationToken.None));
+                    try
+                    {
+                        var result = await executor.Execute(GetBatchExecutionContext(processRequest.Arguments, processRequest.ApplicationContext, results, CancellationToken.None));
 
-                    results.Add(result);
-                }
-                catch (Exception ex)
-                {
-                    results.Add(GetFaultedOperationResult(executor.SupportedOperationName, ex));
-                }
+                        results.Add(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        results.Add(GetFaultedOperationResult(executor.SupportedOperationName, ex));
+                    }
 
-                if (processRequest.Request.FaultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
-                {
-                    break;
+                    if (processRequest.FaultCancellationOption == FaultCancellationOption.Cancel && results.Any(x => x.IsFaulted))
+                    {
+                        break;
+                    }
                 }
             }
 

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{74BCB509-A16E-4903-A3BB-B74EB35633A5}</ProjectGuid>
+    <ProjectGuid>{6A0A33F8-A571-4DDF-9655-A03EDBA7CB42}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MicroCreations.Batch.Castle.Windsor</RootNamespace>
-    <AssemblyName>MicroCreations.Batch.Castle.Windsor</AssemblyName>
+    <RootNamespace>MicroCreations.Batch.DependencyGraph.Castle</RootNamespace>
+    <AssemblyName>MicroCreations.Batch.DependencyGraph.Castle</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,10 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,22 +45,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Castle.Windsor">
+      <Version>4.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MicroCreations.Batch.Common\MicroCreations.Batch.Common.csproj">
       <Project>{0cf63ccf-fccb-439a-959a-56c1f2bd7378}</Project>
       <Name>MicroCreations.Batch.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MicroCreations.Batch\MicroCreations.Batch.csproj">
-      <Project>{06f3e200-bde8-473f-8a58-461bd1d362eb}</Project>
-      <Name>MicroCreations.Batch</Name>
+    <ProjectReference Include="..\MicroCreations.Batch.DependencyGraph\MicroCreations.Batch.DependencyGraph.csproj">
+      <Project>{9188c335-31a4-4973-8a14-68284bf1e24d}</Project>
+      <Name>MicroCreations.Batch.DependencyGraph</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Castle.Core">
-      <Version>4.2.1</Version>
-    </PackageReference>
-    <PackageReference Include="Castle.Windsor">
-      <Version>4.1.0</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

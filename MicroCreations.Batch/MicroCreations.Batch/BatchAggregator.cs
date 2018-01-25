@@ -10,37 +10,51 @@ namespace MicroCreations.Batch
 {
     public class BatchAggregator : IBatchAggregator
     {
-        private readonly IEnumerable<IOperationExecutor> _executors;
         private readonly IContextBuilder _contextBuilder;
-        private readonly IEnumerable<IProcessor> _processors;
+        private readonly IProcessor _serialProcessor;
+        private readonly IProcessor _parallelProcessor;
+        private readonly IProcessor _dependencyProcessor;        
 
         public BatchAggregator(
-            IEnumerable<IOperationExecutor> executors,
             IEnumerable<IProcessor> processors,
             IContextBuilder contextBuilder = null)
         {
-            _executors = executors;
             _contextBuilder = contextBuilder;
-            _processors = processors;
+
+            _serialProcessor = processors.First(x => x.ProcessorType == ProcessorType.Serial);
+            _parallelProcessor = processors.First(x => x.ProcessorType == ProcessorType.Parallel);
+            _dependencyProcessor = processors.First(x => x.ProcessorType == ProcessorType.Dependency);
         }
         
         public async Task<BatchOperationResponse> Execute(BatchOperationRequest request)
         {
-            return await ExecuteBatch(request);
-        }
+            var context = await _contextBuilder?.GetContext() ?? null;
+            var results = await ExecuteBatch(request, context);
 
-        private async Task<BatchOperationResponse> ExecuteBatch(BatchOperationRequest request)
+            var dependencyGraphResults = await _dependencyProcessor.ProcessAsync(new ProcessRequest(results)
+            {
+                ApplicationContext = context,
+                Operations = request.Operations,
+                Arguments = request.Arguments
+            });
+
+            results.AddRange(dependencyGraphResults);            
+
+            return new BatchOperationResponse { Results = results };
+        }
+        
+        private async Task<List<OperationResult>> ExecuteBatch(BatchOperationRequest request, IContext context)
         {
             var adjacentGroups = GetAdjacentGroups(request.Operations);
             var results = new List<OperationResult>();
-            var context = _contextBuilder != null ? await _contextBuilder.GetContext() : null;
             
             foreach (var kvp in adjacentGroups)
             {
-                var result = await _processors.First(x => x.ProcessingType == kvp.Key).ProcessAsync(new ProcessRequest
+                var result = await (kvp.Key == ProcessingType.Serial ? _serialProcessor : _parallelProcessor).ProcessAsync(new ProcessRequest(results)
                 {
-                    Request = request,
-                    Executors = GetExecutors(kvp.Value),
+                    Arguments = request.Arguments,
+                    FaultCancellationOption = request.FaultCancellationOption,
+                    Operations = kvp.Value,
                     ApplicationContext = context
                 });
 
@@ -52,7 +66,7 @@ namespace MicroCreations.Batch
                 }
             }
 
-            return new BatchOperationResponse { Results = results };
+            return results;
         }
 
         private static IDictionary<ProcessingType, IEnumerable<Operation>> GetAdjacentGroups(IEnumerable<Operation> operations)
@@ -84,13 +98,6 @@ namespace MicroCreations.Batch
             }
 
             return dictionary;
-        }
-        
-        private IEnumerable<IOperationExecutor> GetExecutors(IEnumerable<Operation> operations)
-        {
-            var operationNames = operations.Select(x => x.OperationName).ToList();
-
-            return _executors.Where(x => operationNames.Contains(x.SupportedOperationName)).OrderBy(x => operationNames.IndexOf(x.SupportedOperationName));
         }
     }
 }

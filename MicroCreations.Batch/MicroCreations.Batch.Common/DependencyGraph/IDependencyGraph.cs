@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MicroCreations.Batch.DependencyGraph
+namespace MicroCreations.Batch.Common.DependencyGraph
 {
     public interface IDependencyGraph
     {

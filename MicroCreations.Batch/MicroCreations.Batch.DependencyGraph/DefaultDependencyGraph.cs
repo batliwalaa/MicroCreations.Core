@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MicroCreations.Batch.Common.DependencyGraph;
+using System.Collections.Generic;
 
 namespace MicroCreations.Batch.DependencyGraph
 {

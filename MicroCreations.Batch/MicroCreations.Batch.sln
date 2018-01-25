@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Batch", "MicroCreations.Batch\MicroCreations.Batch.csproj", "{06F3E200-BDE8-473F-8A58-461BD1D362EB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "License", "License", "{32E8F333-3E9C-4A2A-AD80-F7C5BF361F9B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Quality", "Quality", "{F86E6E49-8CE5-4178-910C-58190CBD1AE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Batch.Tests", "MicroCreations.Batch.Tests\MicroCreations.Batch.Tests.csproj", "{B2419FF3-E97E-4BFB-B287-7A0498E26D0B}"
@@ -20,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Batch.Common", "MicroCreations.Batch.Common\MicroCreations.Batch.Common.csproj", "{0CF63CCF-FCCB-439A-959A-56C1F2BD7378}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Batch.DependencyGraph.Tests", "MicroCreations.Batch.DependencyGraph.Tests\MicroCreations.Batch.DependencyGraph.Tests.csproj", "{44DA2FA7-77F9-4189-9264-48469A749DF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroCreations.Batch.DependencyGraph.Castle", "MicroCreations.Batch.DependencyGraph.Castle\MicroCreations.Batch.DependencyGraph.Castle.csproj", "{6A0A33F8-A571-4DDF-9655-A03EDBA7CB42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +55,10 @@ Global
 		{44DA2FA7-77F9-4189-9264-48469A749DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44DA2FA7-77F9-4189-9264-48469A749DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44DA2FA7-77F9-4189-9264-48469A749DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A0A33F8-A571-4DDF-9655-A03EDBA7CB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A0A33F8-A571-4DDF-9655-A03EDBA7CB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A0A33F8-A571-4DDF-9655-A03EDBA7CB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A0A33F8-A571-4DDF-9655-A03EDBA7CB42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

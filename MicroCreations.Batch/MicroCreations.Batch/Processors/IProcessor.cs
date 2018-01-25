@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MicroCreations.Batch.Common;
 using MicroCreations.Batch.Common.Operations;
 
 namespace MicroCreations.Batch.Processors
@@ -9,6 +8,6 @@ namespace MicroCreations.Batch.Processors
     {
         Task<IEnumerable<OperationResult>> ProcessAsync(ProcessRequest processRequest);
 
-        ProcessingType ProcessingType { get; }
+        ProcessorType ProcessorType { get; }
     }
 }
