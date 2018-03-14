@@ -7,6 +7,8 @@ namespace MicroCreations.Batch
 {
     public class ProcessRequest
     {
+        public ProcessRequest() : this(null) { }
+
         public ProcessRequest(IEnumerable<OperationResult> results)
         {
             Results = results ?? new OperationResult[] { };

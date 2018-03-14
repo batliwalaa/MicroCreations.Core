@@ -41,6 +41,8 @@ namespace MicroCreations.Batch.Processors
                     var batchExecutionContext = new BatchExecutionContext(processRequest.Arguments, results, CancellationToken.None, processRequest.ApplicationContext);
                     var operationNames = i == 0 ? processRequest.Operations.Select(x => x.OperationName) : dependencyNodes.Select(x => x.Key);
 
+                    if (!operationNames.Any()) break;
+
                     dependencyNodes = default(IEnumerable<DependencyNode>);
                     dependencyNodes = GetDependencyNodes(operationNames, batchExecutionContext);
 
@@ -80,9 +82,9 @@ namespace MicroCreations.Batch.Processors
                 {
                     maxDependencyGraphDepth = 1;
                 }
-                else if(maxDependencyGraphDepth.Value > 5)
+                else if(maxDependencyGraphDepth.Value > 10)
                 {
-                    maxDependencyGraphDepth = 5;
+                    maxDependencyGraphDepth = 10;
                 }
 
                 return maxDependencyGraphDepth.Value;

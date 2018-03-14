@@ -18,15 +18,17 @@ namespace MicroCreations.Batch.Tests.Processors
         private Mock<IOperationExecutor> _operationExecutorMock;
         protected IProcessor Processor { get; set; }
         protected ProcessingType ProcessingType { get; set; }
+
         [SetUp]
         public void SetUp()
         {
+            _operationExecutorMock = new Mock<IOperationExecutor>();
             Initialise(new[] { _operationExecutorMock.Object });
         }
 
         protected void SetUpMocks(bool throwsException = false)
         {
-            _operationExecutorMock = new Mock<IOperationExecutor>();
+            _operationExecutorMock.SetupGet(x => x.SupportedOperationName).Returns("Operation 1").Verifiable();
             var setup = _operationExecutorMock.Setup(x => x.Execute(It.IsAny<BatchExecutionContext>()));
             if (throwsException)
             {
@@ -56,6 +58,7 @@ namespace MicroCreations.Batch.Tests.Processors
         protected void Verify()
         {
             _operationExecutorMock.Verify(x => x.Execute(It.IsAny<BatchExecutionContext>()), Times.Once);
+            _operationExecutorMock.VerifyGet(x => x.SupportedOperationName, Times.AtLeastOnce);
         }
 
         protected async Task Test_With_One_Executor_Expect_Result_With_Count_One()

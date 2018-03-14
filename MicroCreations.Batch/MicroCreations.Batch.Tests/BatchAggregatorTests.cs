@@ -41,6 +41,7 @@ namespace MicroCreations.Batch.Tests
 
             _parallelProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Parallel).Verifiable();
             _serialProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Serial).Verifiable();
+            _dependencyProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Dependency).Verifiable();
             _serialProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
 
             _operationAggregator = new BatchAggregator(new[] { _serialProcessorMock.Object, _parallelProcessorMock.Object, _dependencyProcessorMock.Object }, _contextBuilderMock.Object);
@@ -51,7 +52,9 @@ namespace MicroCreations.Batch.Tests
             results.Results.Count().ShouldBeEquivalentTo(1);
             results.Results.First().ShouldBeEquivalentTo(expectedResult);
 
-            _serialProcessorMock.VerifyGet(x => x.ProcessorType, Times.Exactly(2));
+            _dependencyProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
+            _parallelProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
+            _serialProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
             _serialProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
 
             Verify();
@@ -65,6 +68,8 @@ namespace MicroCreations.Batch.Tests
 
             _serialProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Serial).Verifiable();
             _parallelProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Parallel).Verifiable();
+            _dependencyProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Dependency).Verifiable();
+
             _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
 
             _operationAggregator = new BatchAggregator(new[] { _parallelProcessorMock.Object, _serialProcessorMock.Object, _dependencyProcessorMock.Object }, _contextBuilderMock.Object);
@@ -75,7 +80,9 @@ namespace MicroCreations.Batch.Tests
             results.Results.Count().ShouldBeEquivalentTo(1);
             results.Results.First().ShouldBeEquivalentTo(expectedResult);
 
-            _parallelProcessorMock.VerifyGet(x => x.ProcessorType, Times.Exactly(2));
+            _dependencyProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
+            _serialProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
+            _parallelProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
             _parallelProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
 
             Verify();
@@ -91,9 +98,11 @@ namespace MicroCreations.Batch.Tests
                 new OperationResult { OperationName = "Operation 2", Value = 2 },
             }.AsEnumerable();
 
+            _dependencyProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Dependency).Verifiable();
             _serialProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Serial).Verifiable();
-            _serialProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { new OperationResult { OperationName = "Operation 1", Value = 1 } }.AsEnumerable())).Verifiable();
             _parallelProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Parallel).Verifiable();
+
+            _serialProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { new OperationResult { OperationName = "Operation 1", Value = 1 } }.AsEnumerable())).Verifiable();
             _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { new OperationResult { OperationName = "Operation 2", Value = 2 } }.AsEnumerable())).Verifiable();
 
             _operationAggregator = new BatchAggregator(new[] { _serialProcessorMock.Object, _parallelProcessorMock.Object, _dependencyProcessorMock.Object }, _contextBuilderMock.Object);
@@ -108,7 +117,7 @@ namespace MicroCreations.Batch.Tests
             _serialProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
             _parallelProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
             _parallelProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
-
+            _dependencyProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
             Verify();
         }
 
@@ -118,6 +127,7 @@ namespace MicroCreations.Batch.Tests
             var operations = CreateOperations(new[] { ProcessingType.Parallel });
             var expectedResult = new OperationResult { OperationName = "Operation 1", IsFaulted = true };
 
+            _dependencyProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Dependency).Verifiable();
             _serialProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Serial).Verifiable();
             _parallelProcessorMock.SetupGet(x => x.ProcessorType).Returns(ProcessorType.Parallel).Verifiable();
             _parallelProcessorMock.Setup(x => x.ProcessAsync(It.IsAny<ProcessRequest>())).Returns(Task.FromResult(new[] { expectedResult }.AsEnumerable())).Verifiable();
@@ -130,7 +140,9 @@ namespace MicroCreations.Batch.Tests
             results.Results.Count().ShouldBeEquivalentTo(1);
             results.Results.First().ShouldBeEquivalentTo(expectedResult);
 
-            _parallelProcessorMock.VerifyGet(x => x.ProcessorType, Times.Exactly(2));
+            _dependencyProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
+            _serialProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
+            _parallelProcessorMock.VerifyGet(x => x.ProcessorType, Times.AtLeastOnce);
             _parallelProcessorMock.Verify(x => x.ProcessAsync(It.IsAny<ProcessRequest>()), Times.Once);
 
             Verify();

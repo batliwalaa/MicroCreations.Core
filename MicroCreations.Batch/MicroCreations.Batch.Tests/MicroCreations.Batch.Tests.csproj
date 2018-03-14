@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BatchAggregatorTests.cs" />
     <Compile Include="Processors\BaseProcessorTests.cs" />
+    <Compile Include="Processors\DependencyProcessorTests.cs" />
     <Compile Include="Processors\ParallelProcessorTests.cs" />
     <Compile Include="Processors\SerialProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

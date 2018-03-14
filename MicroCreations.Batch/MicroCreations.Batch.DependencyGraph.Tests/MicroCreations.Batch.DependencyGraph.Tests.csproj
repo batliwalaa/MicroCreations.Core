@@ -42,7 +42,33 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultDependencyGraphTests.cs" />
+    <Compile Include="DependencyGraphBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Castle.Core">
+      <Version>4.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions">
+      <Version>4.19.4</Version>
+    </PackageReference>
+    <PackageReference Include="Moq">
+      <Version>4.8.1</Version>
+    </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>3.9.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicroCreations.Batch.Common\MicroCreations.Batch.Common.csproj">
+      <Project>{0CF63CCF-FCCB-439A-959A-56C1F2BD7378}</Project>
+      <Name>MicroCreations.Batch.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MicroCreations.Batch.DependencyGraph\MicroCreations.Batch.DependencyGraph.csproj">
+      <Project>{9188c335-31a4-4973-8a14-68284bf1e24d}</Project>
+      <Name>MicroCreations.Batch.DependencyGraph</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
